@@ -1,0 +1,97 @@
+=====================
+====GENERAL NOTES:===
+=====================
+- all entries must have the same square-shape, color, and be a power of 2 
+- 512 by 512 is a good resolution for capturing patterns
+- DANGEROUS TRAP: every dataset has black and white images
+  - mixing too different color spaces makes everything crash
+  - RGB works much bette in StyleGAN
+- must all be converted to tf.records format
+- StyleGAN v2 is very data-hungry, so the more images the better
+- NVIDIA folks already trained on a ffhq model, and this is all trained on top of that, which speeds up training immensley, so that's why we may see faces at early ticks lol
+
+TO COPY AND PASTE IN LINUX: 
+RIGHT CLICK HIGHLIGHT WHAT YOU WANT
+THEN LEFT CLICK
+
+============
+===STEPS:===
+============
+-------------------------------------------------------------------------------------------------------------------------------------
+*** AQUIRING DATASET ***
+1) create dataset by running scraper.py (scraped 12 pages with 80 images per page = 960 images total) on normal stuar Desktop
+-------------------------------------------------------------------------------------------------------------------------------------
+*** PREPROCESSING ***
+2) convert the images in the dataset to the same square-shape resolution with an RGB colorspace
+- let's do this on the paperspace server (login on command prompt with ssh paperspace@74.82.30.238 | manually type TJEKM26BPefQ)
+- I started the server then clicked "open terminal" --> it crashed, then I tried logging in via command prompt and it actually worked
+- cd Desktop (enter directory)
+- cd ../ (leave)
+
+### PAPERSPACE server cannot access your computer, so you must download the met959 folder in the paperspace server ###
+- upload met959 folder to Google Drive and download on Paperspace machine --> then move from downloads > Desktop and extract to Desktop
+- once completed, go to CP and type cd Desktop/met959 to enter the folder
+- SILVERBULLET COMMAND: mogrify -verbose -type truecolor -format jpg -thumbnail 512x512^ -gravity center -extent 512x512 *
+  - * = everything in the directory
+  - cropping down to center square of each iamge
+- before running the command, make a copy of the folder (on Paperspace machine (server)) just to be safe
+- running the command multiple times over the same image(s) doesn't harm anything
+- open up another terminal on Paperspace terminal and do sudo apt install htop
+- then type htop --> so we can see how efficiently and fast the server converts the images
+- NOW RUN THE COMMAND (make sure you're in the Desktop/met959 directory on the Paperspace server)
+- the process is lightning fast on the Paperspace server, in which we can see in seconds how all the images in the met959 folder are 512x512 and RGB
+-------------------------------------------------------------------------------------------------------------------------------------
+*** PREPROCESSING ***
+3) from https://github.com/dvschultz/stylegan2
+"CUSTOM: create custom datasets by placing all training images under a single directory. 
+The images must be square-shaped and they must all have the same power-of-two dimensions. 
+To convert the images to multi-resolution TFRecords, run:"
+python dataset_tool.py create_from_images ~/datasets/my-custom-dataset ~/my-custom-images
+python dataset_tool.py display ~/datasets/my-custom-dataset
+
+- but FIRST: git clone https://github.com/dvschultz/stylegan2 (now we have stylegan2 folder on Paperspace server)
+- cd stylegan2 (should be in stylegan2 directory)
+- bash ./easy-install.sh
+- mkdir raw_datasets (creates a folder in stylegan2 folder) 
+- now, we must move the met959 folder from Desktop --> stylegan2 ---> raw_datasets, in which we can just search stylegan2 and drag it in the raw_datasets folder
+- cd raw_datasets
+- ls (should see just met959)
+
+- AS SHOWN ABOVE, WE WILL BE WORKING WITH (in which we must edit):  
+- python dataset_tool.py create_from_images ~/datasets/my-custom-dataset ~/my-custom-images <--- function to produce custom dataset
+  - ~/datasets/my-custom-dataset = where files are going to go
+  - ~/my-custom-images = the raw dataset
+
+TYPE IN COMMAND PROMPT: 
+- cd ../ (to go back into stylegan2 directory and out of raw_datasets folder)
+- python dataset_tool.py create_from_images ~/stylegan2/datasets/met959 ./raw_datasets/met959 (let's just give them the same name for convenience)
+- should work, but if we get "no such module error" --> then do cd ../ --> pip install --user tqdm (tqdm is the module I apparently didn't have)
+- NOW, when it works: look in newly created datasets folder
+  - we see a met959 folder 
+  - we see met959 consits of TF.records files :D
+-------------------------------------------------------------------------------------------------------------------------------------
+*** TRAINING ***
+4) actually, i am going to rename the met959 folder inside of datasets to met959TFR
+- RIGHT NOW WE ARE JUST IN THE stylegan2 DIRECTORY
+- we can do ls datasets/met959TFR to see our tf.records files
+
+- now, from https://github.com/dvschultz/stylegan2
+"TRAINING NETWORKS"
+python run_training.py --num-gpus=8 --data-dir=~/datasets --config=config-f \
+  --dataset=ffhq --mirror-augment=true
+
+- we need to EDIT the above code:
+(paperspace only uses 1 GPU)
+(add . --> --data-dir=~/datasets becomes --data-dir=./datasets)
+(~ says it's in root folder, but that's not our case)
+(changed data= to our dataset)
+(mirror augmentation = randomly flips some of the images being trained left or right | if text, turn it off, otherwise, keep it on) 
+(added --metrics=None | metrics are a way for data scientists to know how well their training is going... for us, however, we are going to be reliant on our eyes) 
+(metrics can also add a lot of additional training time) 
+
+REVISED, FINAL TRAINING COMMAND TO ENTER: 
+- python run_training.py --num-gpus=1 --data-dir=./datasets --config=config-f --dataset=met959TFR --mirror-augment=true --metrics=None
+  - was giving me a ton of errors at first, but I forgot to check the github stylegan2 requirements
+  - to train in background (if it were to take days), I could do: 
+  - nohup python run_training.py --num-gpus=1 --data-dir=./datasets --config=config-f --dataset=met959TFR --mirror-augment=true --metrics=None
+  - make sure to check the nohup.out file in the stylegan2 directory

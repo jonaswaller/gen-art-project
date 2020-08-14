@@ -1,0 +1,24 @@
+=============================================
+==Image Sampling in Rhino 6>Grasshopper 3D:== 
+=============================================
+=https://www.youtube.com/watch?v=jnQeIMq2rn4=
+==========================================================================================
+INTRODUCTION: 
+- an image is a 2D matrix of pixel data
+
+- it can be valuable to extrapolate particular data out of an image's pixels
+
+- surface transposition = taking data and applying it to a surface  
+
+- for image sampling, we need the image and its DEPTH MAP
+==========================================================================================
+DEPTH MAP: 
+- use this guide: http://stereo.jpn.org/jpn/stphmkr/google/colabe.html  
+  - already saved the file in Google Drive
+
+- use https://www.iloveimg.com/crop-image to crop out the depth map 
+  - make sure dimensions match original image (in our example, 512x512)
+==========================================================================================
+IMAGE SAMPLING: 
+- use this guide https://www.youtube.com/watch?v=jnQeIMq2rn4 (as shown above) 
+=========================================================================================
