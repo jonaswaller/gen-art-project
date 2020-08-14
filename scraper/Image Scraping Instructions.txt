@@ -1,9 +1,0 @@
-Image Scraping Instructions: 
-
-1) make sure scraper.py and chromedriver are on Desktop
-
-2) open scraper.py on VSCode
-
-3) adjust scaper.py code to capture what you want
-
-4) run scraper.py
