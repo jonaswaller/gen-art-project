@@ -1,5 +1,5 @@
 # About
-- **2023 Update:** With the popularity of AI tools like Midjourney & Stable Diffusion, **it's quite funny looking back at this**... and crazy to think it was only 3 years ago.
+- **2023 Update:** With the popularity of AI art tools like Midjourney & Stable Diffusion, **it's quite funny looking back at this**... and crazy to think it was only 3 years ago.
 - I trained Nvidia's StyleGAN2 (https://github.com/NVlabs/stylegan2) on 959 images of paintings, generated new paintings, then employed image sampling using Grasshopper to create the renders below. 
 - Please see https://drive.google.com/file/d/1AUVmc1wYSJ01JFvqGa4Bb0OERLdA0fXg/view?usp=sharing for the trained model. 
 
