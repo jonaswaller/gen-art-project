@@ -1,7 +1,10 @@
 # About
-- **2023 Update:** See my most recent generative art project https://www.youtube.com/watch?v=K0Sgy2IVZJ8
+
+**2023 Update:** See my most recent generative art project https://www.youtube.com/watch?v=K0Sgy2IVZJ8
 
 ---
+
+**2020:**
 
 - I trained Nvidia's StyleGAN2 (https://github.com/NVlabs/stylegan2) on 959 images of paintings, generated new paintings, then employed image sampling using Grasshopper to create the renders below. 
 - Please see https://drive.google.com/file/d/1AUVmc1wYSJ01JFvqGa4Bb0OERLdA0fXg/view?usp=sharing for the trained model. 
