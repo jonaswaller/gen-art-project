@@ -1,5 +1,5 @@
 ### 2023
-See my most recent generative art project https://www.youtube.com/watch?v=K0Sgy2IVZJ8
+See my most recent generative art project: https://www.youtube.com/watch?v=K0Sgy2IVZJ8
 
 ---
 
