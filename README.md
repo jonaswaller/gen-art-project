@@ -1,5 +1,5 @@
 # About
-- **2023 Update:** With the popularity of AI art tools like Midjourney & Stable Diffusion, **it's quite funny looking back at this**... and crazy to think it was only 3 years ago.
+- **2023 Update:** See my most recent generative art project https://www.youtube.com/watch?v=K0Sgy2IVZJ8
 
 ---
 
